@@ -9,13 +9,13 @@ namespace Internet_Shop
     /// </summary>
     public class CardClient
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
         public string Number { get; set; }
         /// <summary>
         /// Короткая дата типа 03/2020
         /// </summary>
         public string Date { get; set; }
-        public uint CVV { get; set; }
+        public int CVV { get; set; }
         /// <summary>
         /// 
         /// </summary>
@@ -23,11 +23,11 @@ namespace Internet_Shop
         /// <param name="number">номер</param>
         /// <param name="date">дата окончания</param>
         /// <param name="cvv">3 цифры</param>
-        public CardClient(long number, DateTime date, uint cvv)
+        public CardClient(long number, DateTime date, int cvv)
         {
             try
             {
-                Id = Guid.NewGuid();
+                Id = Guid.NewGuid().ToString();
                 Number = number.ToString();
                 StringBuilder sb = new StringBuilder(date.Month.ToString() + "/" + date.Year.ToString());
                 Date = sb.ToString();
@@ -43,8 +43,7 @@ namespace Internet_Shop
         {
             using (var context = new Context())
             {
-                context.CardClient.Add(this);
-                await context.SaveChangesAsync();
+                await context.Database.ExecuteSqlCommandAsync($"INSERT INTO Products (Id,Number,Date,CVV) VALUES ('{Id}',{Number},{Date},{CVV})");
             }
         }
         public override string ToString()

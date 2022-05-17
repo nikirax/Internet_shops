@@ -10,7 +10,7 @@ namespace Internet_Shop
     /// </summary>
     public class Product
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
         /// <summary>
@@ -20,7 +20,7 @@ namespace Internet_Shop
         /// <summary>
         /// Количество на складе
         /// </summary>
-        public uint Count { get; set; }
+        public int Count { get; set; }
         public static List<Product> Products = new List<Product>();
         /// <summary>
         /// 
@@ -30,11 +30,11 @@ namespace Internet_Shop
         /// <param name="unitMeasurment">Единица измерения (литр метр и т.д)</param>
         /// <param name="valueUnit">Само значения единицы измернеия</param>
         /// <param name="count">Количество на складе</param>
-        public Product(string name,decimal price, string unitMeasurment, uint count)
+        public Product(string name,decimal price, string unitMeasurment, int count)
         {
             try
             {
-                Id = Guid.NewGuid();
+                Id = Guid.NewGuid().ToString();
                 Name = name;
                 Price = price;
                 UnitMeasurement = unitMeasurment;
@@ -47,6 +47,10 @@ namespace Internet_Shop
             }
             AddProductInDataBase();
         }
+        public Product()
+        {
+
+        }
         public override string ToString()
         {
             return $"Name - {Name}, Price - {Price}, {UnitMeasurement}, On storage - {Count}";
@@ -55,8 +59,7 @@ namespace Internet_Shop
         {
             using (var context = new Context())
             {
-                context.Product.Add(this);
-                await context.SaveChangesAsync();
+                await context.Database.ExecuteSqlCommandAsync($"INSERT INTO Products (Id,Name,Price,UnitMeasurement,Count) VALUES ('{Id}','{Name}',{Price},'{UnitMeasurement}',{Count})");
             }
         }
     }

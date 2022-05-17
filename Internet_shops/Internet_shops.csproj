@@ -37,6 +37,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
@@ -60,6 +63,22 @@
     <Compile Include="Migrations\202205171302501_Db3.cs" />
     <Compile Include="Migrations\202205171302501_Db3.designer.cs">
       <DependentUpon>202205171302501_Db3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202205171536057_Db4.cs" />
+    <Compile Include="Migrations\202205171536057_Db4.designer.cs">
+      <DependentUpon>202205171536057_Db4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202205171541036_Db5.cs" />
+    <Compile Include="Migrations\202205171541036_Db5.designer.cs">
+      <DependentUpon>202205171541036_Db5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202205171600568_Db6.cs" />
+    <Compile Include="Migrations\202205171600568_Db6.designer.cs">
+      <DependentUpon>202205171600568_Db6.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202205171651578_Db7.cs" />
+    <Compile Include="Migrations\202205171651578_Db7.designer.cs">
+      <DependentUpon>202205171651578_Db7.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
@@ -284,6 +303,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202205171302501_Db3.resx">
       <DependentUpon>202205171302501_Db3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202205171536057_Db4.resx">
+      <DependentUpon>202205171536057_Db4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202205171541036_Db5.resx">
+      <DependentUpon>202205171541036_Db5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202205171600568_Db6.resx">
+      <DependentUpon>202205171600568_Db6.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202205171651578_Db7.resx">
+      <DependentUpon>202205171651578_Db7.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\Seller.resx">
       <DependentUpon>Seller.cs</DependentUpon>

@@ -10,7 +10,7 @@ namespace Internet_Shop
     /// </summary>
     public class Cities
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         /// <summary>
         /// Все адресса в данном городе
@@ -20,7 +20,7 @@ namespace Internet_Shop
         {
             try
             {
-                Id = Guid.NewGuid();
+                Id = Guid.NewGuid().ToString();
                 Name = name;
                 AdressPickup = adressPickUp;
             }
@@ -38,8 +38,7 @@ namespace Internet_Shop
         {
             using (var context = new Context())
             {
-                context.Cities.Add(this);
-                await context.SaveChangesAsync();
+                await context.Database.ExecuteSqlCommandAsync($"INSERT INTO Cities (Id,Name) VALUES ('{Id}','{Name}')");
             }
         }
     }

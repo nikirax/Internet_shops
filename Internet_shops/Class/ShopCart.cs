@@ -15,7 +15,7 @@ namespace Internet_shops
     /// </summary>
     public class ShopCart
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
         /// <summary>
         /// Все продукты пользователя помещенные в корзину
         /// </summary>
@@ -39,7 +39,7 @@ namespace Internet_shops
         {
             try
             {
-                Id = Guid.NewGuid();
+                Id = Guid.NewGuid().ToString();
                 Client = client;
                 StringBuilder sb = new StringBuilder();
                 Logic(products, sb);
@@ -50,6 +50,10 @@ namespace Internet_shops
                 MessageBox.Show($"Ошибка при вводе: {e}");
             }
             AddShopCartInDataBase();
+        }
+        public void AddProductInCart(Product product)
+        {
+            Products.Add(product);
         }
         public override string ToString()
         {
@@ -64,8 +68,7 @@ namespace Internet_shops
         {
             using (var context = new Context())
             {
-                context.ShopCart.Add(this);
-                await context.SaveChangesAsync();
+                await context.Database.ExecuteSqlCommandAsync($"INSERT INTO ShopCarts (Id,AllPrice,CountProducts,ClientId) VALUES ('{Id}',{AllPrice},{CountProducts},{Client.Id})");
             }
         }
         private void Logic(List<Product> products, StringBuilder sb)
@@ -77,18 +80,29 @@ namespace Internet_shops
                 CountProducts++;
                 sb.Append(item.Name + " ");
             }
-
-            //Проверка на постоянного клиента
-            if (Client.IsRegular)
+            using (var context = new Context())
             {
-                AllPrice -= (AllPrice * 0.02M);
+                var cl = context.Client.SqlQuery($"SELECT * FROM Clients WHERE Id={Client.Id}");
+                //Проверка на постоянного клиента
+                foreach (var item in cl)
+                {
+                    if (item.IsRegular)
+                    {
+                        AllPrice -= (AllPrice * 0.02M);
+                    }
+                }
+                context.Database.ExecuteSqlCommand($"UPDATE ShopCarts SET AllPrice={AllPrice}, WHERE Id={Id}");
             }
-
-            //Добавление клиенту скидки в следующий раз
-            if (AllPrice >= 5000)
-            {
-                //тут по идее должно быть проверка на событие купил ли пользователь то что в корзине, но будем предствалять идеальную ситуацию 
-                Client.IsRegular = true;
+        }
+        public static void Regular(ShopCart shopCart)
+        {
+            using (var context = new Context()) 
+            { 
+                if (shopCart.AllPrice >= 5000)
+                {
+                    //тут по идее должно быть проверка на событие купил ли пользователь то что в корзине, но будем предствалять идеальную ситуацию 
+                    context.Database.ExecuteSqlCommand($"UPDATE Client SET IsRegular=true, WHERE Id={shopCart.Client.Id}");
+                }
             }
         }
     }

@@ -8,11 +8,12 @@ namespace Internet_shops
         public StartForm()
         {
             InitializeComponent();
+
         }
 
         private void Seller_Click(object sender, System.EventArgs e)
         {
-            Form seller = new Seller();
+            Form seller = new SellerSignUp();
             seller.Show();
             this.Hide();
         }

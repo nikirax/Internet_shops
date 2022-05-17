@@ -10,7 +10,7 @@ namespace Internet_Shop
     /// </summary>
     public class Client
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
         public string FIO { get; set; }
         public byte Age { get; set; }
         /// <summary>
@@ -42,7 +42,7 @@ namespace Internet_Shop
         {
             try
             {
-                Id = Guid.NewGuid();
+                Id = Guid.NewGuid().ToString();
                 FIO = fio;
                 Age = age;
                 Carts = carts;
@@ -61,11 +61,10 @@ namespace Internet_Shop
         }
         async public void AddClientInDataBase()
         {
-            //using (var context = new Context())
-            //{
-            //    context.Client.Add(this);
-            //    await context.SaveChangesAsync();
-            //}
+            using (var context = new Context())
+            {
+                await context.Database.ExecuteSqlCommandAsync($"INSERT INTO Clients (Id,FIO,Age,IsRegular,TownClient) VALUES ('{Id}','{FIO}',{Age},{IsRegular},{TownClient})");
+            }
         }
     }
 }
