@@ -32,28 +32,22 @@ namespace Internet_shops
         /// Костыль для красивого вывода продуктов
         /// </summary>
         private string ProductString = "";
-        public Guid ClientId { get; set; }
+        public string ClientId { get; set; }
         [Required]
         public virtual Client Client { get; set; }
-        public ShopCart(List<Product> products, Client client)
+        public void AddClient(Client client)
         {
-            try
-            {
-                Id = Guid.NewGuid().ToString();
-                Client = client;
-                StringBuilder sb = new StringBuilder();
-                Logic(products, sb);
-                ProductString = sb.ToString();
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show($"Ошибка при вводе: {e}");
-            }
+            Client = client;
+            ClientId = client.Id;
             AddShopCartInDataBase();
+        }
+        public ShopCart(List<Product> products = null)
+        {
+            Id = Guid.NewGuid().ToString();
         }
         public void AddProductInCart(Product product)
         {
-            Products.Add(product);
+            //Products.Add(product);
         }
         public override string ToString()
         {
@@ -68,11 +62,12 @@ namespace Internet_shops
         {
             using (var context = new Context())
             {
-                await context.Database.ExecuteSqlCommandAsync($"INSERT INTO ShopCarts (Id,AllPrice,CountProducts,ClientId) VALUES ('{Id}',{AllPrice},{CountProducts},{Client.Id})");
+                //await context.Database.ExecuteSqlCommandAsync($"INSERT INTO ShopCarts (Id,AllPrice,CountProducts,ClientId) VALUES ('{Id}',{AllPrice},{CountProducts},'{Client.Id}')");
             }
         }
-        private void Logic(List<Product> products, StringBuilder sb)
+        public void Logic(List<Product> products)
         {
+            StringBuilder sb = new StringBuilder();
             //Расчет общей цены и количества
             foreach (var item in products)
             {
@@ -82,7 +77,7 @@ namespace Internet_shops
             }
             using (var context = new Context())
             {
-                var cl = context.Client.SqlQuery($"SELECT * FROM Clients WHERE Id={Client.Id}");
+                var cl = context.Client.SqlQuery($"SELECT * FROM Clients WHERE Id='{Client.Id}'");
                 //Проверка на постоянного клиента
                 foreach (var item in cl)
                 {
@@ -91,7 +86,7 @@ namespace Internet_shops
                         AllPrice -= (AllPrice * 0.02M);
                     }
                 }
-                context.Database.ExecuteSqlCommand($"UPDATE ShopCarts SET AllPrice={AllPrice}, WHERE Id={Id}");
+                context.Database.ExecuteSqlCommand($"UPDATE ShopCarts SET AllPrice={AllPrice}, WHERE Id='{Id}'");
             }
         }
         public static void Regular(ShopCart shopCart)
@@ -101,7 +96,7 @@ namespace Internet_shops
                 if (shopCart.AllPrice >= 5000)
                 {
                     //тут по идее должно быть проверка на событие купил ли пользователь то что в корзине, но будем предствалять идеальную ситуацию 
-                    context.Database.ExecuteSqlCommand($"UPDATE Client SET IsRegular=true, WHERE Id={shopCart.Client.Id}");
+                    context.Database.ExecuteSqlCommand($"UPDATE Client SET IsRegular=true, WHERE Id='{shopCart.Client.Id}'");
                 }
             }
         }

@@ -15,14 +15,12 @@ namespace Internet_Shop
         /// <summary>
         /// Все адресса в данном городе
         /// </summary>
-        public List<string> AdressPickup { get; set; }
-        public Cities(string name, List<string> adressPickUp = null)
+        public Cities(string name)
         {
             try
             {
                 Id = Guid.NewGuid().ToString();
                 Name = name;
-                AdressPickup = adressPickUp;
             }
             catch (Exception e)
             {
@@ -32,7 +30,7 @@ namespace Internet_Shop
         }
         public override string ToString()
         {
-            return $"ID - {Id}, Name - {Name}, AdressPickUP - {AdressPickup}";
+            return $"ID - {Id}, Name - {Name}";
         }
         async public void AddCitiesInDataBase()
         {

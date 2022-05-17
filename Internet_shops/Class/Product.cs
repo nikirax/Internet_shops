@@ -22,6 +22,7 @@ namespace Internet_Shop
         /// </summary>
         public int Count { get; set; }
         public static List<Product> Products = new List<Product>();
+        public int localcount { get; set; } = 0;
         /// <summary>
         /// 
         /// </summary>

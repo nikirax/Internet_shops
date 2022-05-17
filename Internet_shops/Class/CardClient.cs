@@ -43,7 +43,8 @@ namespace Internet_Shop
         {
             using (var context = new Context())
             {
-                await context.Database.ExecuteSqlCommandAsync($"INSERT INTO Products (Id,Number,Date,CVV) VALUES ('{Id}',{Number},{Date},{CVV})");
+                context.CardClient.Add(this);
+                await context.SaveChangesAsync();
             }
         }
         public override string ToString()

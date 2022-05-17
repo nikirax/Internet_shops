@@ -80,18 +80,20 @@
     <Compile Include="Migrations\202205171651578_Db7.designer.cs">
       <DependentUpon>202205171651578_Db7.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202205171955087_Db8.cs" />
+    <Compile Include="Migrations\202205171955087_Db8.designer.cs">
+      <DependentUpon>202205171955087_Db8.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202205172116007_v.cs" />
+    <Compile Include="Migrations\202205172116007_v.designer.cs">
+      <DependentUpon>202205172116007_v.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Class\CardClient.cs" />
     <Compile Include="Class\Cities.cs" />
     <Compile Include="Class\Client.cs" />
     <Compile Include="Class\Product.cs" />
-    <Compile Include="View\AddClientCard.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="View\AddClientCard.Designer.cs">
-      <DependentUpon>AddClientCard.cs</DependentUpon>
-    </Compile>
     <Compile Include="View\Seller.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -316,8 +318,17 @@
     <EmbeddedResource Include="Migrations\202205171651578_Db7.resx">
       <DependentUpon>202205171651578_Db7.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202205171955087_Db8.resx">
+      <DependentUpon>202205171955087_Db8.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202205172116007_v.resx">
+      <DependentUpon>202205172116007_v.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\Seller.resx">
       <DependentUpon>Seller.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\SellerSignUp.resx">
+      <DependentUpon>SellerSignUp.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\ShoperSignUp.resx">
       <DependentUpon>ShoperSignUp.cs</DependentUpon>

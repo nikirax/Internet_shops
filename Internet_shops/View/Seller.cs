@@ -1,92 +1,81 @@
-﻿using Internet_Shop;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data.SqlClient;
 using System.Windows.Forms;
 
 namespace Internet_shops.View
 {
     public partial class Seller : Form
     {
+        DataSet ds;
+        SqlDataAdapter adapter;
+        SqlCommandBuilder commandBuilder;
+        string connectionString = @"data source=(localdb)\MSSQLLocalDB;Initial Catalog=Internet_Shop;Integrated Security=True;";
+        string sql = "SELECT * FROM Products";
         public Seller()
         {
             InitializeComponent();
-            List<Product> travels = Product.Products;
-            BindingSource bs = new BindingSource();
-            bs.DataSource = travels;
-            dataGridView1.AutoGenerateColumns = false;
-            dataGridView1.DataSource = bs;
 
-            DataGridViewColumn col1 = new DataGridViewTextBoxColumn();
-            col1.DataPropertyName = "Service.Name";
-            col1.HeaderText = "Service Name";
-            dataGridView1.Columns.Add(col1);
+            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridView1.AllowUserToAddRows = false;
 
-            DataGridViewColumn col2 = new DataGridViewTextBoxColumn();
-            col2.DataPropertyName = "City.Name";
-            col2.HeaderText = "City Name";
-            dataGridView1.Columns.Add(col2);
-
-            DataGridViewColumn col3 = new DataGridViewTextBoxColumn();
-            col3.DataPropertyName = "City.Name";
-            col3.HeaderText = "Destiny Name";
-            dataGridView1.Columns.Add(col3);
-
-            DataGridViewColumn col4 = new DataGridViewTextBoxColumn();
-            col4.DataPropertyName = "Price";
-            col4.HeaderText = "Price";
-            dataGridView1.Columns.Add(col4);
-        }
-
-        private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
-        {
-            if (dataGridView1.Rows[e.RowIndex].DataBoundItem != null &&
-                dataGridView1.Columns[e.ColumnIndex].DataPropertyName.Contains("."))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                e.Value = BindProperty(dataGridView1.Rows[e.RowIndex].DataBoundItem,
-                    dataGridView1.Columns[e.ColumnIndex].DataPropertyName);
+                connection.Open();
+                adapter = new SqlDataAdapter(sql, connection);
+
+                ds = new DataSet();
+                adapter.Fill(ds);
+                dataGridView1.DataSource = ds.Tables[0];
+                
             }
         }
-
-        private string BindProperty(object property, string propertyName)
+        /// <summary>
+        /// Save
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button1_Click(object sender, EventArgs e)
         {
-            string retValue = "";
-
-            if (propertyName.Contains("."))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                PropertyInfo[] arrayProperties;
-                string leftPropertyName;
+                connection.Open();
+                adapter = new SqlDataAdapter(sql, connection);
+                commandBuilder = new SqlCommandBuilder(adapter);
+                adapter.InsertCommand = new SqlCommand("sp_CreateProduct", connection);
+                adapter.InsertCommand.CommandType = CommandType.StoredProcedure;
+                adapter.InsertCommand.Parameters.Add(new SqlParameter("@name", SqlDbType.NVarChar, 50, "Name"));
+                adapter.InsertCommand.Parameters.Add(new SqlParameter("@price", SqlDbType.Decimal, 0, "Price"));
+                adapter.InsertCommand.Parameters.Add(new SqlParameter("@unit", SqlDbType.NVarChar, 50, "UnitMeasurement"));
+                adapter.InsertCommand.Parameters.Add(new SqlParameter("@count", SqlDbType.Int, 0, "Count"));
 
-                leftPropertyName = propertyName.Substring(0, propertyName.IndexOf("."));
-                arrayProperties = property.GetType().GetProperties();
+                SqlParameter parameter = adapter.InsertCommand.Parameters.Add("@Id", SqlDbType.NVarChar, 100, "Id");
+                parameter.Direction = ParameterDirection.Output;
 
-                foreach (PropertyInfo propertyInfo in arrayProperties)
-                {
-                    if (propertyInfo.Name == leftPropertyName)
-                    {
-                        retValue = BindProperty(propertyInfo.GetValue(property, null),
-                        propertyName.Substring(propertyName.IndexOf(".") + 1));
-                        break;
-                    }
-                }
+                adapter.Update(ds);
             }
-            else
+        }
+        /// <summary>
+        /// Add
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button2_Click(object sender, EventArgs e)
+        {
+            DataRow row = ds.Tables[0].NewRow(); // добавляем новую строку в DataTable
+            ds.Tables[0].Rows.Add(row);
+        }
+        /// <summary>
+        /// Delete
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button3_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in dataGridView1.SelectedRows)
             {
-                Type propertyType;
-                PropertyInfo propertyInfo;
-
-                propertyType = property.GetType();
-                propertyInfo = propertyType.GetProperty(propertyName);
-                retValue = propertyInfo.GetValue(property, null).ToString();
+                dataGridView1.Rows.Remove(row);
             }
-
-            return retValue;
         }
     }
 }

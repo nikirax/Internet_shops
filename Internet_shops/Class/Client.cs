@@ -20,7 +20,7 @@ namespace Internet_Shop
         /// <summary>
         /// Корзина пользователя
         /// </summary>
-        public Guid ShopCartId { get; set; }
+        public string ShopCartId { get; set; }
         public virtual ShopCart ShopCart { get; set; }
         /// <summary>
         /// Город в котором он живет
@@ -38,7 +38,7 @@ namespace Internet_Shop
         /// <param name="carts">Все карты клиента</param>
         /// <param name="shopсart">Его корзина</param>
         /// <param name="townClient">Город в котором он живет</param>
-        public Client(string fio, byte age, List<CardClient> carts, string townClient, ShopCart shopсart = null)
+        public Client(string fio, byte age, List<CardClient> carts, string townClient, ShopCart shopсart)
         {
             try
             {
@@ -47,6 +47,7 @@ namespace Internet_Shop
                 Age = age;
                 Carts = carts;
                 ShopCart = shopсart;
+                ShopCartId = shopсart.Id;
                 TownClient = townClient;
             }
             catch(Exception e)
@@ -61,10 +62,11 @@ namespace Internet_Shop
         }
         async public void AddClientInDataBase()
         {
-            using (var context = new Context())
-            {
-                await context.Database.ExecuteSqlCommandAsync($"INSERT INTO Clients (Id,FIO,Age,IsRegular,TownClient) VALUES ('{Id}','{FIO}',{Age},{IsRegular},{TownClient})");
-            }
+            //using (var context = new Context())
+            //{
+            //    context.Client.Add(this);
+            //    await context.SaveChangesAsync();
+            //}
         }
     }
 }
