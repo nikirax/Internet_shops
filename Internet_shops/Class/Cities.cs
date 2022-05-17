@@ -16,7 +16,7 @@ namespace Internet_Shop
         /// Все адресса в данном городе
         /// </summary>
         public List<string> AdressPickup { get; set; }
-        public Cities(string name, List<string> adressPickUp)
+        public Cities(string name, List<string> adressPickUp = null)
         {
             try
             {

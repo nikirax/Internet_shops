@@ -1,7 +1,7 @@
 ﻿
-namespace Internet_shops
+namespace Internet_shops.View
 {
-    partial class StartForm
+    partial class AddClientCard
     {
         /// <summary>
         /// Required designer variable.
@@ -29,19 +29,10 @@ namespace Internet_shops
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StartForm));
-            this.SuspendLayout();
-            // 
-            // StartForm
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "StartForm";
-            this.Text = "StartForm";
-            this.ResumeLayout(false);
-
+            this.Text = "AddClientCard";
         }
 
         #endregion

@@ -1,5 +1,4 @@
-﻿using Internet_Shop;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Internet_shops
+namespace Internet_shops.View
 {
-    public partial class StartForm : Form
+    public partial class AddClientCard : Form
     {
-        public StartForm()
+        public AddClientCard()
         {
             InitializeComponent();
         }

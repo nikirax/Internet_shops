@@ -25,7 +25,7 @@ namespace Internet_Shop
         /// <summary>
         /// Город в котором он живет
         /// </summary>
-        public Cities TownClient { get; set; }
+        public string TownClient { get; set; }
         /// <summary>
         /// Постоянный ли он покупатель
         /// </summary>
@@ -38,7 +38,7 @@ namespace Internet_Shop
         /// <param name="carts">Все карты клиента</param>
         /// <param name="shopсart">Его корзина</param>
         /// <param name="townClient">Город в котором он живет</param>
-        public Client(string fio, byte age, List<CardClient> carts, ShopCart shopсart, Cities townClient)
+        public Client(string fio, byte age, List<CardClient> carts, string townClient, ShopCart shopсart = null)
         {
             try
             {
@@ -57,15 +57,15 @@ namespace Internet_Shop
         }
         public override string ToString()
         {
-            return $"FIO - {FIO}, Age - {Age}, Town - {TownClient.Name}";
+            return $"FIO - {FIO}, Age - {Age}, Town - {TownClient}";
         }
         async public void AddClientInDataBase()
         {
-            using (var context = new Context())
-            {
-                context.Client.Add(this);
-                await context.SaveChangesAsync();
-            }
+            //using (var context = new Context())
+            //{
+            //    context.Client.Add(this);
+            //    await context.SaveChangesAsync();
+            //}
         }
     }
 }

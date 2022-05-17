@@ -1,5 +1,6 @@
 ﻿using Internet_shops;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace Internet_Shop
@@ -17,13 +18,10 @@ namespace Internet_Shop
         /// </summary>
         public string UnitMeasurement { get; set; }
         /// <summary>
-        /// Само значения единицы измернеия
-        /// </summary>
-        public double ValueUnit { get; set; }
-        /// <summary>
         /// Количество на складе
         /// </summary>
         public uint Count { get; set; }
+        public static List<Product> Products = new List<Product>();
         /// <summary>
         /// 
         /// </summary>
@@ -32,7 +30,7 @@ namespace Internet_Shop
         /// <param name="unitMeasurment">Единица измерения (литр метр и т.д)</param>
         /// <param name="valueUnit">Само значения единицы измернеия</param>
         /// <param name="count">Количество на складе</param>
-        public Product(string name,decimal price, string unitMeasurment, double valueUnit, uint count)
+        public Product(string name,decimal price, string unitMeasurment, uint count)
         {
             try
             {
@@ -40,8 +38,8 @@ namespace Internet_Shop
                 Name = name;
                 Price = price;
                 UnitMeasurement = unitMeasurment;
-                ValueUnit = valueUnit;
                 Count = count;
+                Products.Add(this);
             }
             catch(Exception e)
             {
@@ -51,7 +49,7 @@ namespace Internet_Shop
         }
         public override string ToString()
         {
-            return $"Name - {Name}, Price - {Price}, {ValueUnit} {UnitMeasurement}, On storage - {Count}";
+            return $"Name - {Name}, Price - {Price}, {UnitMeasurement}, On storage - {Count}";
         }
         async public void AddProductInDataBase()
         {
