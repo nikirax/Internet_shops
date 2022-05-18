@@ -39,7 +39,7 @@ namespace Internet_shops
         {
             Client = client;
             ClientId = client.Id;
-            AddShopCartInDataBase();
+            //AddShopCartInDataBase();
         }
         public ShopCart(List<Product> products = null)
         {
@@ -58,13 +58,13 @@ namespace Internet_shops
             }
             return b;
         }
-        async public void AddShopCartInDataBase()
-        {
-            using (var context = new Context())
-            {
-                //await context.Database.ExecuteSqlCommandAsync($"INSERT INTO ShopCarts (Id,AllPrice,CountProducts,ClientId) VALUES ('{Id}',{AllPrice},{CountProducts},'{Client.Id}')");
-            }
-        }
+        //async public void AddShopCartInDataBase()
+        //{
+        //    using (var context = new Context())
+        //    {
+        //        //await context.Database.ExecuteSqlCommandAsync($"INSERT INTO ShopCarts (Id,AllPrice,CountProducts,ClientId) VALUES ('{Id}',{AllPrice},{CountProducts},'{Client.Id}')");
+        //    }
+        //}
         public void Logic(List<Product> products)
         {
             StringBuilder sb = new StringBuilder();

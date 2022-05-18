@@ -54,19 +54,19 @@ namespace Internet_Shop
             {
                 MessageBox.Show($"Ошибка при вводе: {e}");
             }
-            AddClientInDataBase();
+            //AddClientInDataBase();
         }
         public override string ToString()
         {
             return $"FIO - {FIO}, Age - {Age}, Town - {TownClient}";
         }
-        async public void AddClientInDataBase()
-        {
+        //async public void AddClientInDataBase()
+        //{
             //using (var context = new Context())
             //{
             //    context.Client.Add(this);
             //    await context.SaveChangesAsync();
             //}
-        }
+        //}
     }
 }

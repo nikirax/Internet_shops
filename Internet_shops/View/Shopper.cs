@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -88,35 +89,44 @@ namespace Internet_shops.View
                     List<Label> lablesup = new List<Label>();
                     List<Label> lablesdown = new List<Label>();
                     label2.Visible = true;
-                    int localcount = 100;
-                    string productId = "";
+                    
                     using (var context = new Context())
                     {   
                         var products = context.Database.SqlQuery<Product>($"SELECT * FROM Products WHERE Id='{button.Name}'");
+                        Dictionary<string, int> localcounts = new Dictionary<string, int>();
                         //добавляем подукт по которому нажали на кнопку
                         foreach (Product product in products)
                         {
-                            localcount = product.localcount;
-                            productId = product.Name;
-                            //если 2 раза или более нажмем по тому же продукту то будет добавлять просто количество
-                            if (product.localcount == 0)
+                            try
                             {
-                                lablesup.Add(new Label() { Location = new Point(locationX, locationYLable1), Text = product.Name });
-                                lablesdown.Add(new Label() { Location = new Point(locationX, locationYBable2), Text = "1", Name = product.Id });
-                                locationX += 100;
+                                var localproduct = localcounts.Single(s => s.Key == product.Id);
+                                Console.WriteLine("тут 1");
+                                localcounts[localproduct.Key] = 1;
                             }
-                            else
+                            catch
                             {
-                                foreach(var lable in lablesdown)
+                                foreach(var item in localcounts)
                                 {
-                                    if (lable.Name == product.Name)
-                                    {
-                                        lable.Text = Convert.ToInt32(lable.Text + 1).ToString();
-                                    }
+                                    Console.WriteLine(item.Key + " " + item.Value);
                                 }
                             }
-                        }
-                        context.Database.ExecuteSqlCommand($"UPDATE Products SET localcount={localcount++} WHERE Id='{productId}'");
+                            Console.WriteLine("тут 0");
+                            localcounts.Add(product.Id, 0);
+                            //если 2 раза или более нажмем по тому же продукту то будет добавлять просто количество
+                            if (product.localcount == 0)
+                                {
+                                    lablesup.Add(new Label() { Location = new Point(locationX, locationYLable1), Text = product.Name });
+                                    lablesdown.Add(new Label() { Location = new Point(locationX, locationYBable2), Text = "1", Name = product.Id });
+                                    locationX += 100;
+                                }
+                                else
+                                {
+                                    var spisok = Controls.Cast<Label>();
+                                    Label lb = spisok.Single(s => s.Name == product.Id);
+                                    lb.Name = Convert.ToInt32(lb.Name + 1).ToString();
+                                    Console.WriteLine("тут");
+                                }
+                            }
                         //отрисовываем их
                         foreach (var lable in lablesup)
                         {
